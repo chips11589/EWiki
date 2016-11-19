@@ -22,6 +22,15 @@ namespace EWiki.SignalR.Hubs
 
         public async Task SniperMessage(string message)
         {
+            var connectionId = Context.ConnectionId;
+
+            // Disable snipping feature
+            Clients.Client(connectionId).GetSniperStatus(JsonConvert.SerializeObject(new SniperStatus
+            {
+                IsAvailable = false
+            }));
+            return;
+
             try
             {
                 var snipeRq = JsonConvert.DeserializeObject<SnipeRq>(message);
